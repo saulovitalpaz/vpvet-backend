@@ -1,4 +1,4 @@
-from app_final import create_app
+from app import create_app
 from extensions import db
 from models.user import Clinic, User
 from models.patient import Tutor, Animal
@@ -9,12 +9,10 @@ from datetime import datetime, timedelta
 app = create_app()
 
 with app.app_context():
-    # Clear existing data (development only)
-    print("Dropping all tables...")
-    db.drop_all()
-
-    print("Creating all tables...")
-    db.create_all()
+    # Check if data already exists
+    if User.query.first():
+        print("Database already has users. Skipping seed.")
+        exit(0)
 
     # Create clinics
     print("Creating clinics...")
